@@ -1,15 +1,21 @@
 # experimento.py — prove que da para "testar" sem mandar e-mail de verdade
 #
-# Parte B: complete a classe FakeEmail abaixo (um e-mail "de mentira").
+# Parte B: a classe FakeEmail abaixo e um e-mail "de mentira".
+# Ela respeita o mesmo contrato do Enviador (tem enviar(para, texto)), mas
+# em vez de mandar e-mail de verdade so ANOTA quem receberia. Como o servico
+# recebe o enviador por construtor (DIP), da para injetar o fake no lugar do
+# SMTP e testar sem enviar nada.
 from repositorio.assinantes import RepositorioAssinantes
 from servico.newsletter import ServicoNewsletter
+from enviador.enviador import Enviador
 
 
-# TODO: complete a classe FakeEmail
-#   - no __init__:  self.enviados = []
-#   - em enviar(self, para, texto):  self.enviados.append(para)
-class FakeEmail:
-    pass   # <- apague o "pass" e escreva o __init__ e o enviar()
+class FakeEmail(Enviador):
+    def __init__(self):
+        self.enviados = []          # so anota, nao envia nada
+
+    def enviar(self, para, texto):
+        self.enviados.append(para)
 
 
 if __name__ == "__main__":
